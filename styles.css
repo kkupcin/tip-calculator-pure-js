@@ -227,6 +227,7 @@ h1 {
   text-align: right;
   color: var(--neutral-dark);
   font-weight: 700;
+  transition: all 0.1s ease-in-out;
 }
 
 .entry-input:focus,
@@ -325,8 +326,9 @@ h1 {
   padding: 0.5rem 0;
 }
 
-.reset-button:disabled {
+.reset-button.disabled {
   opacity: 0.3;
+  pointer-events: none;
 }
 
 .attribution {
