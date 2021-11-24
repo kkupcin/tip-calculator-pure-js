@@ -63,8 +63,8 @@ billInput.addEventListener("input", (e) => {
   }
 
   // Prevent number fro starting with 0
-  if (billInputAmount.length > 1 && billInputAmount.startsWith("0")) {
-    billInputAmount = billInputAmount.replace("0", "");
+  if (billInputAmountString.length > 1 && billInputAmountString.startsWith("0")) {
+    billInputAmount = billInputAmountString.replace("0", "");
   }
 
   previousBillValue = billInputAmount;
