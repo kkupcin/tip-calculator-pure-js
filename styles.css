@@ -377,17 +377,6 @@ h1 {
   border: 2px solid #b57b6d;
 }
 
-.attribution {
-  font-size: 0.8rem;
-  color: var(--neutral-dark);
-}
-
-.attribution a {
-  text-decoration: none;
-  color: inherit;
-  font-weight: 700;
-}
-
 @media screen and (max-width: 1600px) {
   .main-container {
     width: 60%;
@@ -435,12 +424,6 @@ h1 {
 
   .tip-input-wrapper {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  .attribution {
-    text-align: center;
-    margin: 32px 0;
-    line-height: 1.2;
   }
 }
 
