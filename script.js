@@ -21,6 +21,8 @@ let currentTip;
 
 tipWrapper.addEventListener("click", (e) => {
   let clickedTip = e.target.dataset.tip;
+  resetBtn.classList.remove("disabled");
+  customTip.value = "";
   let tipAmountList = [...tipWrapper.children];
   tipAmountList.forEach((tip) => {
     if (tip.dataset.tip === clickedTip) {
@@ -40,8 +42,8 @@ tipWrapper.addEventListener("click", (e) => {
 billInput.addEventListener("input", (e) => {
   let billInputAmount = parseFloat(e.target.value);
   let billInputAmountString = e.target.value;
-  if (billInputAmount === "" || billInputAmount < 0) {
-    billInputAmount = "";
+  if (billInputAmountString === "" || parseFloat(billInputAmount) < 0) {
+    billInput.value = "";
   }
 
   // Restore reset button functionality
@@ -51,23 +53,35 @@ billInput.addEventListener("input", (e) => {
 
   // Add number limits on inputs
   if (billInputAmount > 9999.99 || billInputAmountString.includes("-")) {
-    billInputAmount = previousBillValue;
+    billInput.value = previousBillValue;
   }
 
   if (billInputAmountString.includes(".")) {
     let index = billInputAmountString.indexOf(".");
     let calcDecimals = billInputAmountString.length - index;
     if (calcDecimals > 3) {
-      billInputAmount = previousBillValue;
+      billInput.value = previousBillValue;
     }
   }
 
-  // Prevent number fro starting with 0
-  if (billInputAmount.length > 1 && billInputAmount.startsWith("0")) {
-    billInputAmount = billInputAmount.replace("0", "");
+  // Prevent number from starting with 0
+  if (
+    billInputAmountString.length > 1 &&
+    billInputAmountString.startsWith("0")
+  ) {
+    billInput.value = billInputAmountString.replace("0", "");
   }
 
-  previousBillValue = billInputAmount;
+  previousBillValue = billInput.value;
+
+  // Disable reset button if all input values are empty
+  if (
+    billInput.value === "" &&
+    customTip.value === "" &&
+    noOfPeople.value === ""
+  ) {
+    resetBtn.classList.add("disabled");
+  }
 
   calculateTip();
   calculateTotal();
@@ -80,8 +94,8 @@ customTip.addEventListener("input", (e) => {
     currentTip = 0;
   }
 
-  if (tipInputAmount < 0 || tipInputAmount === "") {
-    tipInputAmount = 0;
+  if (tipInputAmountString === "" || parseFloat(tipInputAmount) < 0) {
+    customTip.value = "";
   }
 
   // Restore reset button functionality
@@ -95,7 +109,7 @@ customTip.addEventListener("input", (e) => {
     tipInputAmountString.includes("-") ||
     tipInputAmountString.length > 3
   ) {
-    tipInputAmount = previousTipValue;
+    customTip.value = previousTipValue;
   }
 
   // Adjust current tip value
@@ -105,10 +119,19 @@ customTip.addEventListener("input", (e) => {
 
   // Prevent number fro starting with 0
   if (tipInputAmountString.length > 1 && tipInputAmountString.startsWith("0")) {
-    tipInputAmount = tipInputAmountString.replace("0", "");
+    customTip.value = tipInputAmountString.replace("0", "");
   }
 
-  previousTipValue = tipInputAmount;
+  previousTipValue = customTip.value;
+
+  // Disable reset button if all input values are empty
+  if (
+    billInput.value === "" &&
+    customTip.value === "" &&
+    noOfPeople.value === ""
+  ) {
+    resetBtn.classList.add("disabled");
+  }
 
   calculateTip();
   calculateTotal();
@@ -124,10 +147,9 @@ noOfPeople.addEventListener("input", (e) => {
     noOfPeopleInputAmount < 0
   ) {
     noOfPeopleEntry.classList.add("error-label");
-    return;
+  } else {
+    noOfPeopleEntry.classList.remove("error-label");
   }
-
-  noOfPeopleEntry.classList.remove("error-label");
 
   // Restore reset button functionality
   if (noOfPeopleInputAmount !== "") {
@@ -135,12 +157,15 @@ noOfPeople.addEventListener("input", (e) => {
   }
 
   // Add number limits on inputs
+  if (noOfPeopleInputAmount > 99 || noOfPeopleInputAmountString.length > 2) {
+    noOfPeople.value = defaultNoOfPeopleValue;
+  }
+
   if (
-    noOfPeopleInputAmount > 99 ||
-    noOfPeopleInputAmountString.includes("-") ||
-    noOfPeopleInputAmountString.length > 2
+    noOfPeopleInputAmountString === "" ||
+    parseFloat(noOfPeopleInputAmount) < 0
   ) {
-    noOfPeopleInputAmount = defaultNoOfPeopleValue;
+    noOfPeople.value = 0;
   }
 
   // Prevent number fro starting with 0
@@ -148,10 +173,19 @@ noOfPeople.addEventListener("input", (e) => {
     noOfPeopleInputAmountString.length > 1 &&
     noOfPeopleInputAmountString.startsWith("0")
   ) {
-    noOfPeopleInputAmount = noOfPeopleInputAmountString.replace("0", "");
+    noOfPeople.value = noOfPeopleInputAmountString.replace("0", "");
   }
 
-  defaultNoOfPeopleValue = noOfPeopleInputAmount;
+  defaultNoOfPeopleValue = noOfPeople.value;
+
+  // Disable reset button if all input values are empty
+  if (
+    billInput.value === "" &&
+    customTip.value === "" &&
+    noOfPeople.value === ""
+  ) {
+    resetBtn.classList.add("disabled");
+  }
 
   calculateTip();
   calculateTotal();
@@ -183,8 +217,15 @@ const calculateTotal = () => {
 
 resetBtn.addEventListener("click", (e) => {
   e.preventDefault();
+  let tipAmountList = [...tipWrapper.children];
   billInput.value = "";
   customTip.value = "";
   noOfPeople.value = "";
+  calculateTip();
+  calculateTotal();
+  tipAmountList.forEach((tip) => {
+    tip.classList.remove("active");
+    currentTip = 0;
+  });
   resetBtn.classList.add("disabled");
 });

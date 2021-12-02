@@ -377,17 +377,6 @@ h1 {
   border: 2px solid #b57b6d;
 }
 
-.attribution {
-  font-size: 0.8rem;
-  color: var(--neutral-dark);
-}
-
-.attribution a {
-  text-decoration: none;
-  color: inherit;
-  font-weight: 700;
-}
-
 @media screen and (max-width: 1600px) {
   .main-container {
     width: 60%;
@@ -424,7 +413,7 @@ h1 {
   }
 
   .el-wrapper__line-wrapper:last-child {
-    margin-bottom: 3rem; 
+    margin-bottom: 3rem;
   }
 }
 
@@ -435,12 +424,6 @@ h1 {
 
   .tip-input-wrapper {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  .attribution {
-    text-align: center;
-    margin: 32px 0;
-    line-height: 1.2;
   }
 }
 
@@ -461,5 +444,14 @@ h1 {
   .entry-input {
     width: 100%;
     box-sizing: border-box;
+  }
+
+  .el-wrapper__line-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .line-wrapper__text {
+    margin-bottom: 1rem;
   }
 }
